@@ -7,7 +7,7 @@ from config import INPUT_SIZE
 import imageio
 
 
-class CUB():
+class CUB:
     def __init__(self, root, is_train=True, data_len=None):
         self.root = root
         self.is_train = is_train
