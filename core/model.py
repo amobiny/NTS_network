@@ -2,16 +2,16 @@ from torch import nn
 import torch
 import torch.nn.functional as F
 from torch.autograd import Variable
-from core import resnet
+from core import resnet, densenet
 import numpy as np
 from core.anchors import generate_default_anchor_maps, hard_nms
 from config import CAT_NUM, PROPOSAL_NUM
 
 
 class ProposalNet(nn.Module):
-    def __init__(self):
+    def __init__(self, init_feats=2048):
         super(ProposalNet, self).__init__()
-        self.down1 = nn.Conv2d(2048, 128, 3, 1, 1)
+        self.down1 = nn.Conv2d(init_feats, 128, 3, 1, 1)
         self.down2 = nn.Conv2d(128, 128, 3, 2, 1)
         self.down3 = nn.Conv2d(128, 128, 3, 2, 1)
         self.ReLU = nn.ReLU()
@@ -33,13 +33,15 @@ class ProposalNet(nn.Module):
 class attention_net(nn.Module):
     def __init__(self, topN=4):
         super(attention_net, self).__init__()
-        self.pretrained_model = resnet.resnet50(pretrained=True)
+        self.pretrained_model = densenet.densenet201(pretrained=True)
+        # self.pretrained_model = resnet.resnet50(pretrained=True)
         self.pretrained_model.avgpool = nn.AdaptiveAvgPool2d(1)     # 1 denotes the output size
-        self.pretrained_model.fc = nn.Linear(512 * 4, 200)          # in_features=512*4, out_features=200
-        self.proposal_net = ProposalNet()
+        num_features = self.pretrained_model.num_features
+        self.pretrained_model.fc = nn.Linear(num_features, 200)  # in_features=512*4, out_features=200
+        self.proposal_net = ProposalNet(num_features)
         self.topN = topN
-        self.concat_net = nn.Linear(2048 * (CAT_NUM + 1), 200)
-        self.partcls_net = nn.Linear(512 * 4, 200)
+        self.concat_net = nn.Linear(num_features * (CAT_NUM + 1), 200)
+        self.partcls_net = nn.Linear(num_features, 200)
         _, edge_anchors, _ = generate_default_anchor_maps()
         self.pad_side = 224
         self.edge_anchors = (edge_anchors + 224).astype(np.int)
