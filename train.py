@@ -17,6 +17,8 @@ if DATA == 'CUB':
     from core.dataset import CUB as data
 elif DATA == 'ISIC':
     from core.skin_dataset import ISIC as data
+elif DATA == 'cheXpert':
+    from core.chexpert_dataset import CheXpertDataSet as data
 else:
     raise NameError('Dataset not available!')
 

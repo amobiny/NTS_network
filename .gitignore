@@ -105,6 +105,8 @@ venv.bak/
 .idea/
 save/
 CUB_200_2011/
+*.h5
+*.hdf5
 
 
 
