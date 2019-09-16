@@ -51,9 +51,12 @@ class CheXpertDataSet(Dataset):
 
                 image_names.append(os.path.join(os.path.dirname(root), image_name))
                 labels.append(label)
-
-        self.image_names = image_names
-        self.labels = np.array(labels)[:, -1]
+        if data_len is not None:
+            self.image_names = image_names[:data_len]
+            self.labels = np.array(labels)[:, -1][:data_len]
+        else:
+            self.image_names = image_names
+            self.labels = np.array(labels)[:, -1]   # Opacity
 
     def __getitem__(self, index):
         """Take the index of item and returns the image and its labels"""
@@ -64,7 +67,7 @@ class CheXpertDataSet(Dataset):
         if self.is_train:
             img = transforms.Resize((600, 600), Image.BILINEAR)(img)
             img = transforms.RandomCrop(INPUT_SIZE)(img)
-            img = transforms.RandomHorizontalFlip()(img)
+            # img = transforms.RandomHorizontalFlip()(img)
             img = transforms.ToTensor()(img)
             img = transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])(img)
 
@@ -74,7 +77,7 @@ class CheXpertDataSet(Dataset):
             img = transforms.ToTensor()(img)
             img = transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])(img)
 
-        return img, target
+        return img, target, index
 
         # image_name = self.image_names[index]
         # image = Image.open(image_name).convert('RGB')

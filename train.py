@@ -10,7 +10,7 @@ from core import model
 from utils.logger_utils import Logger
 import sys
 
-os.environ['CUDA_VISIBLE_DEVICES'] = '0,1,2,3'
+os.environ['CUDA_VISIBLE_DEVICES'] = '0,1,2'
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 if DATA == 'CUB':
@@ -38,10 +38,15 @@ os.makedirs(model_dir)
 
 logs_dir = os.path.join(save_dir, 'tf_logs')
 
+# bkp of config def
+os.system('cp {}/config.py {}'.format(BASE_DIR, save_dir))
 # bkp of model def
 os.system('cp {}/core/model.py {}'.format(BASE_DIR, save_dir))
 # bkp of train procedure
 os.system('cp {}/train.py {}'.format(BASE_DIR, save_dir))
+if DATA == 'cheXpert':
+    os.system('cp {}/core/chexpert_dataset.py {}'.format(BASE_DIR, save_dir))
+
 
 LOG_FOUT = open(os.path.join(save_dir, 'log_train.txt'), 'w')
 LOG_FOUT.write(str(save_dir) + '\n')

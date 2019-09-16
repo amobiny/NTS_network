@@ -1,4 +1,4 @@
-BATCH_SIZE = 16
+BATCH_SIZE = 1
 NUM_CLS = 2
     # for CUB: 200
     # for cheXpert: 14
@@ -11,7 +11,7 @@ SAVE_FREQ = 1
 DISP_FREQ = 100
 resume = ''
 DATA = 'cheXpert'    # 'CUB' or 'ISIC' or 'cheXpert'
-test_model = 'model.ckpt'
+test_model = '/home/cougarnet.uh.edu/amobiny/Desktop/NTS_network/save/20190912_173900/models/007.ckpt'
 save_dir = '/home/cougarnet.uh.edu/amobiny/Desktop/NTS_network/save/'
 data_dir = '/home/cougarnet.uh.edu/amobiny/Desktop/CheXpert-v1.0-small'
     # for CUB: '/home/cougarnet.uh.edu/amobiny/Desktop/NTS_network/CUB_200_2011'
