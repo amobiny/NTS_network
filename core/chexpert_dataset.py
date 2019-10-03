@@ -53,10 +53,10 @@ class CheXpertDataSet(Dataset):
                 labels.append(label)
         if data_len is not None:
             self.image_names = image_names[:data_len]
-            self.labels = np.array(labels)[:, -1][:data_len]
+            self.labels = np.array(labels)[:, 10][:data_len]
         else:
             self.image_names = image_names
-            self.labels = np.array(labels)[:, -1]   # Opacity
+            self.labels = np.array(labels)[:, 10]
 
     def __getitem__(self, index):
         """Take the index of item and returns the image and its labels"""
@@ -65,17 +65,19 @@ class CheXpertDataSet(Dataset):
         target = self.labels[index]
 
         if self.is_train:
-            img = transforms.Resize((600, 600), Image.BILINEAR)(img)
+            img = transforms.Resize((500, 500), Image.BILINEAR)(img)
             img = transforms.RandomCrop(INPUT_SIZE)(img)
             # img = transforms.RandomHorizontalFlip()(img)
             img = transforms.ToTensor()(img)
-            img = transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])(img)
+            # img = transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])(img)
+            img = transforms.Normalize([0.5330, 0.5330, 0.5330], [0.0349, 0.0349, 0.0349])(img)
 
         else:
-            img = transforms.Resize((600, 600), Image.BILINEAR)(img)
-            img = transforms.CenterCrop(INPUT_SIZE)(img)
+            img = transforms.Resize((INPUT_SIZE, INPUT_SIZE), Image.BILINEAR)(img)
+            # img = transforms.CenterCrop(INPUT_SIZE)(img)
             img = transforms.ToTensor()(img)
-            img = transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])(img)
+            # img = transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])(img)
+            img = transforms.Normalize([0.5330, 0.5330, 0.5330], [0.0349, 0.0349, 0.0349])(img)
 
         return img, target, index
 

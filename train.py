@@ -5,7 +5,7 @@ import torch.utils.data
 from torch.nn import DataParallel
 from datetime import datetime
 from torch.optim.lr_scheduler import MultiStepLR
-from config import BATCH_SIZE, DATA, PROPOSAL_NUM, SAVE_FREQ, LR, WD, DISP_FREQ, resume, save_dir, data_dir
+from config import BATCH_SIZE, DATA, PROPOSAL_NUM, SAVE_FREQ, LR, WD, DISP_FREQ, resume, save_dir
 from core import model
 from utils.logger_utils import Logger
 import sys
@@ -15,10 +15,13 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 if DATA == 'CUB':
     from core.dataset import CUB as data
+    data_dir = '/home/cougarnet.uh.edu/amobiny/Desktop/NTS_network/CUB_200_2011'
 elif DATA == 'ISIC':
     from core.skin_dataset import ISIC as data
+    data_dir = ''
 elif DATA == 'cheXpert':
     from core.chexpert_dataset import CheXpertDataSet as data
+    data_dir = '/home/cougarnet.uh.edu/amobiny/Desktop/CheXpert-v1.0-small'
 else:
     raise NameError('Dataset not available!')
 

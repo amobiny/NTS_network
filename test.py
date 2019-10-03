@@ -2,16 +2,18 @@ import os
 from torch.autograd import Variable
 import torch.utils.data
 from torch.nn import DataParallel
-from config import BATCH_SIZE, PROPOSAL_NUM, test_model, DATA, data_dir, DISP_FREQ
-from core import model, dataset
-from core.py_utils import progress_bar
+from config import BATCH_SIZE, PROPOSAL_NUM, test_model, DATA, DISP_FREQ
+from core import model
 
 if DATA == 'CUB':
     from core.dataset import CUB as data
+    data_dir = '/home/cougarnet.uh.edu/amobiny/Desktop/NTS_network/CUB_200_2011'
 elif DATA == 'ISIC':
     from core.skin_dataset import ISIC as data
+    data_dir = ''
 elif DATA == 'cheXpert':
     from core.chexpert_dataset import CheXpertDataSet as data
+    data_dir = '/home/cougarnet.uh.edu/amobiny/Desktop/CheXpert-v1.0-small'
 else:
     raise NameError('Dataset not available!')
 

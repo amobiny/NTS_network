@@ -56,7 +56,7 @@ class CUB:
             img = transforms.ToTensor()(img)
             img = transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])(img)
 
-        return img, target
+        return img, target, index
 
     def __len__(self):
         if self.is_train:
